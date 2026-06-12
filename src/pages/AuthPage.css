@@ -1,0 +1,392 @@
+/* ── Auth page ─────────────────────────────────────────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 1rem 1rem; /* top padding accounts for the top bar */
+  background: linear-gradient(145deg, #4a1630 0%, #7b2d4e 45%, #a8436b 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background circles ────────────────────────────────────────────────────── */
+.auth-circles { position: absolute; inset: 0; pointer-events: none; }
+.circle { position: absolute; border-radius: 50%; opacity: 0.1; background: #fff; animation: floatCircle 14s ease-in-out infinite; }
+.c1 { width: 240px; height: 240px; top: -60px;  left: -50px;  animation-delay: 0s; }
+.c2 { width: 150px; height: 150px; bottom: -40px; right: -40px; animation-delay: 3s; animation-duration: 18s; }
+.c3 { width: 100px; height: 100px; top: 40%;   left: 78%;   animation-delay: 6s; animation-duration: 12s; }
+.c4 { width: 60px;  height: 60px;  top: 22%;   left: 8%;    animation-delay: 9s; animation-duration: 16s; }
+@keyframes floatCircle {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-16px) scale(1.05); }
+}
+
+/* ── Language switcher — in top bar, dark text for readability ─────────────── */
+.auth-lang {
+  display: flex;
+  z-index: 20;
+}
+.auth-lang .lang-switcher {
+  display: flex;
+  gap: 0.3rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 0.2rem;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.auth-lang .lang-btn {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.auth-lang .lang-btn.active {
+  background: #fff;
+  color: #7b2d4e;
+  font-weight: 700;
+}
+.auth-lang .lang-btn:hover:not(.active) {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────── */
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+  animation: cardIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  position: relative;
+  z-index: 5;
+  /* Prevent card from being taller than the viewport */
+  max-height: calc(100dvh - 1.5rem);
+  overflow-y: auto;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Shimmer top strip */
+.auth-card-strip {
+  height: 4px;
+  background: linear-gradient(90deg, #7b2d4e, #d4a574, #7b2d4e);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes shimmer { 0% { background-position: 0%; } 100% { background-position: 200%; } }
+
+/* Card header */
+.auth-card-header {
+  text-align: center;
+  padding: 1rem 1.5rem 0;
+  flex-shrink: 0;
+}
+.auth-app-name {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #7b2d4e;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+.auth-app-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: #6b5c52;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+}
+
+/* ── Flow container ────────────────────────────────────────────────────────── */
+.auth-flow {
+  padding: 0.6rem 1.25rem 1rem;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Progress dots ─────────────────────────────────────────────────────────── */
+.auth-steps {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+.auth-step-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #e8ddd0;
+  transition: background 0.25s, transform 0.2s;
+}
+.auth-step-dot.active { background: #7b2d4e; transform: scale(1.3); }
+
+/* ── Step content ──────────────────────────────────────────────────────────── */
+.auth-step { text-align: center; flex-shrink: 0; }
+.auth-logo  { font-size: 2.2rem; line-height: 1; margin-bottom: 0.35rem; }
+.step-title { font-size: 1rem; font-weight: 700; color: #2d2018; margin: 0 0 0.2rem; }
+.step-hint  { font-size: 0.78rem; color: #6b5c52; margin: 0 0 0.65rem; }
+
+/* ── Phone display ─────────────────────────────────────────────────────────── */
+.phone-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: #faf7f2;
+  border: 2px solid #e8ddd0;
+  border-radius: 12px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  min-height: 2.6rem;
+  letter-spacing: 0.06em;
+  transition: border-color 0.2s, background 0.2s;
+}
+.phone-display.phone-valid   { border-color: #4ade80; background: #f0fdf4; }
+.phone-display.phone-invalid { border-color: #f87171; background: #fef2f2; }
+
+.phone-placeholder { color: #c4b5a5; font-weight: 400; letter-spacing: 0.1em; }
+.phone-number { color: #2d2018; }
+.phone-ok     { color: #15803d; font-weight: 700; }
+
+/* Carrier badge (Ethiotelecom / Safaricom) */
+.carrier-badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #7b2d4e;
+  color: #fff;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.phone-count { font-size: 0.7rem; color: #6b5c52; margin: 0.2rem 0 0.35rem; }
+.phone-error-msg {
+  color: #b91c1c; font-size: 0.78rem;
+  margin: 0.2rem 0 0.4rem;
+  background: #fef2f2; padding: 0.35rem 0.6rem;
+  border-radius: 8px; border: 1px solid #fecaca;
+}
+
+/* ── PIN dots ──────────────────────────────────────────────────────────────── */
+.pin-dots {
+  display: flex; justify-content: center; gap: 0.9rem;
+  margin: 0.25rem 0 0.75rem;
+}
+.pin-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2.5px solid #e8ddd0; background: transparent;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+.pin-dot.filled { background: #7b2d4e; border-color: #7b2d4e; transform: scale(1.2); }
+.pin-error { color: #b91c1c; font-size: 0.82rem; margin: 0.35rem 0 0; }
+
+/* ── Number pad ────────────────────────────────────────────────────────────── */
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.numpad-btn {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  background: #f5f0eb;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2d2018;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.1s, transform 0.08s, box-shadow 0.1s;
+  box-shadow: 0 2px 5px rgba(45,32,24,0.1);
+  /* Use min/max to keep buttons visible but not oversized */
+  min-height: 52px;
+  max-height: 72px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.numpad-btn:hover:not(:disabled) { background: #ede5f5; transform: scale(1.04); }
+.numpad-btn:active:not(:disabled) { background: #7b2d4e; color: #fff; transform: scale(0.96); box-shadow: none; }
+.numpad-del   { background: #fef2f2; color: #b91c1c; }
+.numpad-del:hover:not(:disabled)   { background: #fecaca; }
+.numpad-del:active:not(:disabled)  { background: #b91c1c; color: #fff; }
+.numpad-empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; }
+.numpad-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── Name inputs ───────────────────────────────────────────────────────────── */
+.name-inputs { margin: 0.25rem 0 0.75rem; text-align: left; }
+.name-field  { margin-bottom: 0.7rem; }
+.name-field label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: #2d2018; margin-bottom: 0.25rem;
+}
+.name-field input {
+  width: 100%; padding: 0.7rem 0.85rem;
+  border: 1.5px solid #e8ddd0; border-radius: 12px;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 1rem; color: #2d2018; background: #faf7f2;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.name-field input:focus {
+  outline: none; border-color: #7b2d4e;
+  box-shadow: 0 0 0 3px rgba(123,45,78,0.1);
+}
+
+/* ── Action buttons ────────────────────────────────────────────────────────── */
+.auth-next-btn {
+  display: block; width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #7b2d4e, #a8436b);
+  color: #fff; border: none; border-radius: 999px;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.12s;
+  box-shadow: 0 3px 12px rgba(123,45,78,0.35);
+  -webkit-tap-highlight-color: transparent;
+}
+.auth-next-btn:hover:not(:disabled) { opacity: 0.92; transform: translateY(-1px); }
+.auth-next-btn:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+
+.auth-back-btn {
+  display: block; width: 100%;
+  margin-top: 0.45rem;
+  padding: 0.55rem;
+  background: transparent; color: #6b5c52;
+  border: 1px solid #e8ddd0; border-radius: 999px;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 0.88rem; cursor: pointer;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.auth-back-btn:hover { background: #faf7f2; }
+
+.auth-loading { text-align: center; color: #7b2d4e; font-size: 1rem; margin: 0.4rem 0; }
+.auth-error   {
+  color: #b91c1c; font-size: 0.85rem; text-align: center;
+  margin: 0.4rem 0; background: #fef2f2;
+  padding: 0.45rem 0.75rem; border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+/* ── Switch link ───────────────────────────────────────────────────────────── */
+.auth-switch-row {
+  text-align: center; font-size: 0.82rem; color: #6b5c52;
+  margin: 0.75rem 0 0;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+}
+.auth-link {
+  background: none; border: none; color: #7b2d4e;
+  font-family: inherit; font-size: inherit; font-weight: 700;
+  cursor: pointer; text-decoration: underline; padding: 0;
+}
+.auth-link:hover { color: #a8436b; }
+
+/* ── Bottom branding ───────────────────────────────────────────────────────── */
+.auth-brand {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.78rem;
+  margin-top: 0.85rem;
+  text-align: center;
+  position: relative; z-index: 5;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+}
+
+/* ── Small phones: fit everything without scrolling ───────────────────────── */
+@media (max-height: 700px) {
+  .auth-page     { padding: 4rem 0.75rem 0.5rem; }
+  .auth-card     { max-height: calc(100dvh - 4.5rem); }
+  .auth-logo     { font-size: 1.6rem; margin-bottom: 0.2rem; }
+  .auth-app-name { font-size: 1.1rem; }
+  .auth-app-sub  { font-size: 0.72rem; }
+  .auth-card-header { padding: 0.65rem 1.25rem 0; }
+  .auth-flow     { padding: 0.5rem 1rem 0.75rem; }
+  .step-title    { font-size: 0.9rem; }
+  .step-hint     { font-size: 0.72rem; margin-bottom: 0.45rem; }
+  .auth-steps    { margin-bottom: 0.5rem; }
+  .pin-dots      { margin-bottom: 0.5rem; }
+  .phone-display { padding: 0.45rem 0.75rem; font-size: 1rem; margin-bottom: 0.5rem; }
+  .numpad        { gap: 0.35rem; max-width: 230px; }
+  .numpad-btn    { font-size: 1.15rem; min-height: 44px; max-height: 60px; }
+  .auth-next-btn { padding: 0.65rem; font-size: 0.9rem; margin-top: 0.5rem; }
+  .auth-back-btn { padding: 0.45rem; font-size: 0.82rem; margin-top: 0.3rem; }
+  .auth-switch-row { margin: 0.5rem 0 0; font-size: 0.78rem; }
+  .auth-brand    { display: none; }
+}
+
+/* Very small phones (iPhone SE, etc.) */
+@media (max-height: 580px) {
+  .auth-page      { padding-top: 2rem; }
+  .auth-logo      { font-size: 1.3rem; }
+  .auth-app-name  { font-size: 1rem; }
+  .numpad-btn     { min-height: 38px; font-size: 1rem; }
+  .numpad         { gap: 0.28rem; max-width: 200px; }
+  .auth-card-strip { height: 3px; }
+}
+
+/* Wide screens */
+@media (min-width: 480px) {
+  .numpad-btn { min-height: 64px; max-height: 80px; font-size: 1.5rem; }
+  .auth-app-name { font-size: 1.5rem; }
+  .numpad { max-width: 280px; gap: 0.55rem; }
+}
+
+/* ── Auth top bar — back button + language toggle ──────────────────────────── */
+.auth-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  z-index: 20;
+  background: rgba(74, 22, 48, 0.35);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Back to landing page button ───────────────────────────────────────────── */
+.auth-back-home {
+  background: rgba(255,255,255,0.2);
+  border: 1.5px solid rgba(255,255,255,0.6);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.auth-back-home:hover { background: rgba(255,255,255,0.35); transform: translateX(-2px); }
