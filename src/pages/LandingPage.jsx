@@ -430,12 +430,14 @@ function useInView(threshold = 0.15) {
 
 // ── Stat counter card ─────────────────────────────────────────────────────────
 function StatCard({ stat, inView }) {
-  const raw = stat.n.replace(/[^0-9]/g, '');
-  const suffix = stat.n.replace(/[0-9]/g, '');
-  const count = useCounter(raw || 0, 2000, inView);
+  // If value contains '/' (like 24/7), don't animate — display as-is
+  const isStatic = stat.n.includes('/') || isNaN(parseInt(stat.n));
+  const raw    = isStatic ? '' : stat.n.replace(/[^0-9]/g, '');
+  const suffix = isStatic ? '' : stat.n.replace(/[0-9]/g, '');
+  const count  = useCounter(raw || 0, 2000, inView);
   return (
     <div className="lp-stat-card">
-      <div className="lp-stat-num">{raw ? `${count}${suffix}` : stat.n}</div>
+      <div className="lp-stat-num">{isStatic ? stat.n : (raw ? `${count}${suffix}` : stat.n)}</div>
       <div className="lp-stat-label">{stat.label}</div>
     </div>
   );

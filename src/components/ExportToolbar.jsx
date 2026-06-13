@@ -3,7 +3,13 @@ import { t } from '../lib/i18n';
 import { WhatsAppShare } from './WhatsAppShare';
 
 export function ExportToolbar({ items, commands, lang, onReset }) {
-  const handlePDF   = () => exportPDF(items, commands, lang);
+  const handlePDF = async () => {
+    try {
+      await exportPDF(items, commands, lang);
+    } catch (e) {
+      console.error('PDF export failed:', e);
+    }
+  };
   const handleCSV   = () => exportCSV(items, lang);
   const handleReset = () => {
     if (window.confirm(t(lang, 'resetConfirm'))) onReset();
