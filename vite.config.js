@@ -11,7 +11,7 @@ export default defineConfig({
           'vendor-react': ['react', 'react-dom'],
           'vendor-supabase': ['@supabase/supabase-js'],
           'vendor-charts': ['recharts'],
-          'vendor-pdf': ['jspdf', 'jspdf-autotable'],
+          'vendor-pdf': ['jspdf', 'jspdf-autotable', 'html2canvas'],
         },
       },
     },
