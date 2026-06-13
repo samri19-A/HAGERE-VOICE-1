@@ -336,7 +336,7 @@ function SignInFlow({ lang, onSuccess, onSwitch, signIn }) {
 }
 
 // ── Sign-up flow ──────────────────────────────────────────────────────────────
-function SignUpFlow({ lang, onSuccess, onSwitch, signUp }) {
+function SignUpFlow({ lang, onSuccess, onSwitch, signUp, signIn }) {
   const [step,       setStep]       = useState(0); // 0=phone, 1=name, 2=pin, 3=confirm
   const [phone,      setPhone]      = useState('');
   const [name,       setName]       = useState('');
@@ -367,15 +367,20 @@ function SignUpFlow({ lang, onSuccess, onSwitch, signUp }) {
     setLoading(true);
     setErr('');
     try {
-      await signUp({
+      const result = await signUp({
         email:    phoneToEmail(phoneDigits),
         password: pinToPassword(pin),
         fullName: name.trim() || phoneDigits,
         shopName: shopName.trim() || name.trim() || 'የእኔ ሱቅ',
       });
+      // If Supabase returns a session directly (email confirmation disabled), proceed
+      // If no session yet (confirmation email sent), sign in immediately
+      if (!result?.session) {
+        await signIn({ email: phoneToEmail(phoneDigits), password: pinToPassword(pin) });
+      }
       onSuccess();
     } catch (ex) {
-      const msg = ex.message?.includes('already') || ex.message?.includes('exists')
+      const msg = ex.message?.includes('already') || ex.message?.includes('exists') || ex.message?.includes('registered')
         ? (lang === 'am' ? '❌ ይህ ስልክ ቁጥር አስቀድሞ ተመዝግቧል' : '❌ This phone number is already registered')
         : (lang === 'am' ? '❌ ስህተት ተፈጥሯል — እንደገና ሞክር' : '❌ Something went wrong — try again');
       setErr(msg);
@@ -474,7 +479,7 @@ export function AuthPage({ onAuthSuccess, onBack }) {
 
         {mode === 'login'
           ? <SignInFlow lang={lang} onSuccess={onAuthSuccess} onSwitch={() => setMode('signup')} signIn={signIn} />
-          : <SignUpFlow lang={lang} onSuccess={onAuthSuccess} onSwitch={() => setMode('login')} signUp={signUp} />
+          : <SignUpFlow lang={lang} onSuccess={onAuthSuccess} onSwitch={() => setMode('login')} signUp={signUp} signIn={signIn} />
         }
       </div>
 

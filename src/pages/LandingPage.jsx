@@ -61,11 +61,11 @@ const CONTENT = {
     empowerment: {
       badge: 'Real Impact',
       h2: 'Built For Women. Built For Growth.',
-      story: 'Samrawit runs a clothing business in Addis Ababa. Like millions of Ethiopian women entrepreneurs, she spent hours every week writing records, calculating revenue, and trying to keep track of her inventory.',
+      story: 'Samrawit runs a clothing business in Gondar, Ethiopia. Like millions of Ethiopian women entrepreneurs, she spent hours every week writing records, calculating revenue, and trying to keep track of her inventory.',
       before: { title:'Before HAGERE VOICE', items:['📓 Paper notebooks that get lost','🧮 Manual calculations every evening','❌ No clear picture of profits','📦 Stockouts without warning','⏰ Hours wasted on paperwork'] },
       after:  { title:'After HAGERE VOICE', items:['🎤 Voice updates in seconds','💰 Real-time revenue in Birr','✅ Always knows her stock levels','📊 Professional reports instantly','⏰ More time for her customers'] },
       quote: '"Technology should work for me, not against me. HAGERE VOICE understands my language and my business."',
-      name: '— Mastewal, Clothing Business Owner, Addis Ababa',
+      name: '— Mastewal, Clothing Business Owner, Gondar',
     },
     demo: {
       badge: 'Product Demo',
@@ -105,10 +105,39 @@ const CONTENT = {
       desc: 'Join a future where every Ethiopian woman entrepreneur can confidently manage her business using simple, accessible technology.',
       btn1: '🚀 Get Started Free', btn2: '▶ Watch Demo',
     },
+    contactInfo: {
+      title: 'Contact Us',
+      email: 'Samrawitabebaw680@gmail.com',
+      telegram: '@SamrawitAbebaw',
+      location: 'Gondar, Ethiopia',
+    },
+    legal: {
+      privacyTitle: 'Privacy Policy',
+      termsTitle: 'Terms of Service',
+      privacy: [
+        'HAGERE VOICE collects only the information needed to run your shop account: phone number, shop name, inventory data, and voice command history.',
+        'Your data is stored securely on Supabase with row-level security. Only you can access your shop data unless you share reports yourself.',
+        'We do not sell personal data to third parties.',
+        'You may request account deletion by contacting our support team.',
+        'We may update this policy as the platform evolves. Continued use means you accept the updated policy.',
+      ],
+      terms: [
+        'By using HAGERE VOICE you agree to use the platform for lawful business management purposes only.',
+        'You are responsible for keeping your PIN/password secure and for the accuracy of inventory and sales you record.',
+        'The platform is provided "as is" during early access. We strive for reliability but cannot guarantee uninterrupted service.',
+        'Voice recognition and automated parsing may occasionally misinterpret commands — always verify important records.',
+        'We may suspend accounts that abuse the service or attempt unauthorized access.',
+      ],
+    },
     footer: {
       tagline: 'Voice-powered business management for Ethiopian women entrepreneurs.',
-      links: ['About Project','Contact','Privacy Policy','Terms','Competition Info'],
-      copy: '© 2025 HAGERE VOICE. Built with ❤️ for Ethiopian Women Entrepreneurs.',
+      links: [
+        { key: 'services', label: 'Services' },
+        { key: 'contact',  label: 'Contact' },
+        { key: 'privacy',  label: 'Privacy Policy' },
+        { key: 'terms',    label: 'Terms' },
+      ],
+      copy: '© 2026 HAGERE VOICE. Built with ❤️ for Ethiopian Women Entrepreneurs.',
     },
   },
   am: {
@@ -169,11 +198,11 @@ const CONTENT = {
     empowerment: {
       badge: 'እውነተኛ ተጽዕኖ',
       h2: 'ለሴቶች የተሰራ። ለዕድገት የተሰራ።',
-      story: 'ሳምራዊት በአዲስ አበባ የልብስ ቢዝነስ ትሰራለች። እንደ ሚሊዮኖች ኢትዮጵያዊ ሴት ሥራ ፈጣሪዎች፣ ሳምራዊት ሳምንት ሳምንት ሰዓታት ዝርዝሮችን ትጽፍ፣ ገቢ ታሰላ፣ ቆጠባዋን ለመከታተል ትሞክር ነበር።',
+      story: 'ሳምራዊት በጎንደር፣ ኢትዮጵያ የልብስ ቢዝነስ ትሰራለች። እንደ ሚሊዮኖች ኢትዮጵያዊ ሴት ሥራ ፈጣሪዎች፣ ሳምራዊት ሳምንት ሳምንት ሰዓታት ዝርዝሮችን ትጽፍ፣ ገቢ ታሰላ፣ ቆጠባዋን ለመከታተል ትሞክር ነበር።',
       before: { title:'HAGERE VOICE በፊት', items:['📓 የሚጠፉ ማስታወሻ ደብተሮች','🧮 ምሽት ምሽት የእጅ ስሌቶች','❌ ትርፍ ምን ያህል እንደሆነ አይታወቅም','📦 ያለ ማስጠንቀቂያ ዕቃ ማጣት','⏰ ሰዓታት በወረቀት ሥራ ይባክናሉ'] },
       after:  { title:'HAGERE VOICE ከዛ በኋላ', items:['🎤 የድምጽ ዝመናዎች በሰከንዶች','💰 ወቅታዊ ገቢ በብር','✅ ሁልጊዜ የቆጠባ ደረጃ ታውቃለች','📊 ሙያዊ ሪፖርቶች ወዲያው','⏰ ለደንበኞቿ ተጨማሪ ጊዜ'] },
       quote: '"ቴክኖሎጂ ለኔ መስራት አለበት፣ ኔ ለቴክኖሎጂ አይደለም። HAGERE VOICE ቋንቋዬን እና ቢዝነሴን ይረዳል።"',
-      name: '— ሳምራዊት፣ የልብስ ቢዝነስ ባለቤት፣ አዲስ አበባ',
+      name: '— ሳምራዊት፣ የልብስ ቢዝነስ ባለቤት፣ ጎንደር',
     },
     demo: {
       badge: 'ማሳያ',
@@ -213,13 +242,159 @@ const CONTENT = {
       desc: 'እያንዳንዷ ኢትዮጵያዊ ሴት ሥራ ፈጣሪ ቢዝነሷን ቀላልና ተደራሽ ቴክኖሎጂ ተጠቅማ በሃሎነት ማስተዳደር የምትችልበት ወደፊት ይቀላቀሉ።',
       btn1: '🚀 ነፃ ጀምር', btn2: '▶ ቪዲዮ ይመልከቱ',
     },
+    contactInfo: {
+      title: 'ያግኙን',
+      email: 'Samrawitabebaw680@gmail.com',
+      telegram: '@SamrawitAbebaw',
+      location: 'ጎንደር፣ ኢትዮጵያ',
+    },
+    legal: {
+      privacyTitle: 'የግላዊነት ፖሊሲ',
+      termsTitle: 'የአገልግሎት ውሎች',
+      privacy: [
+        'HAGERE VOICE የሱቅ መለያዎን ለማስኬድ የሚያስፈልገውን መረጃ만 ይሰበስባል፡ ስልክ ቁጥር፣ የሱቅ ስም፣ የቆጠባ ዳታ እና የድምጽ ትዕዛዝ ታሪክ።',
+        'ዳታዎ በSupabase ላይ በደህንነት ይከማቻል። ሪፖርት ካልላኩ በስተቀር የሱቅ ዳታዎን ሌላ ሰው መድረስ አይችልም።',
+        'የግል መረጃን ለሶስተኛ ወገን አንሸጥም።',
+        'መለያዎን ለማጥፋት በድጋፍ ቡድናችን መጠየቅ ይችላሉ።',
+        'መድረኩ ሲሻሻል ፖሊሲው ሊቀየር ይችላል። መጠቀም መቀጠል የተሻሻለውን ፖሊሲ መቀበል ማለት ነው።',
+      ],
+      terms: [
+        'HAGERE VOICE በመጠቀም ለህጋዊ የቢዝነስ አስተዳደር ብቻ መድረኩን መጠቀም ይስማማሉ።',
+        'PIN/የይለፍ ቃልዎን ለመጠበቅ እና የሚመዘግቡት ቆጠባና ሽያጭ ትክክለኛ መሆኑን ለማረጋገጥ ተጠያቂ ነዎት።',
+        'መድረኩ በጥንቃቄ ምዝገባ ጊዜ "እንደሆነ" ይሰጣል። ለተቀባይነት እንሞክራለን ግን ያለማቋረጥ አገልግሎት ማረጋገጥ አንችልም።',
+        'የድምጽ recognition እና parsing አንዳንድ ጊዜ ትዕዛዞችን ሊጠራጠር ይችላል — አስፈላጊ ምዝግብ ሁልጊዜ ያረጋግጡ።',
+        'አገልግሎቱን የሚያሳሱ ወይም ያለ ፈቃድ የሚገቡ መለያዎችን ልንዘጋ ይችላል።',
+      ],
+    },
     footer: {
       tagline: 'ለኢትዮጵያዊ ሴት ሥራ ፈጣሪዎች በድምጽ የሚመራ ቢዝነስ አስተዳደር።',
-      links: ['ስለ ፕሮጀክቱ','ያግኙን','የግላዊነት ፖሊሲ','ውሎች','የውድድር መረጃ'],
+      links: [
+        { key: 'services', label: 'አገልግሎቶች' },
+        { key: 'contact',  label: 'ያግኙን' },
+        { key: 'privacy',  label: 'የግላዊነት ፖሊሲ' },
+        { key: 'terms',    label: 'ውሎች' },
+      ],
       copy: '© 2026 HAGERE VOICE. ለኢትዮጵያዊ ሴት ሥራ ፈጣሪዎች በ❤️ የተሰራ።',
     },
   },
 };
+
+// ── Config ────────────────────────────────────────────────────────────────────
+const DEMO_VIDEO_SRC = '/videos/hagere-demo.mp4';
+
+const SOCIAL_LINKS = [
+  { id: 'instagram', href: 'https://instagram.com/samrawitabebaw_19',                    label: 'Instagram' },
+  { id: 'github',    href: 'https://github.com/samri19-A',                               label: 'GitHub' },
+  { id: 'telegram',  href: 'https://t.me/SamrawitAbebaw',                                label: 'Telegram' },
+  { id: 'linkedin',  href: 'https://www.linkedin.com/in/samrawit-abebaw-9b5b523a5',      label: 'LinkedIn' },
+];
+
+// ── Social icons (SVG) ────────────────────────────────────────────────────────
+function SocialIcon({ id }) {
+  const props = { width: 18, height: 18, fill: 'currentColor', 'aria-hidden': true };
+  switch (id) {
+    case 'instagram':
+      return (
+        <svg viewBox="0 0 24 24" {...props}>
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg>
+      );
+    case 'github':
+      return (
+        <svg viewBox="0 0 24 24" {...props}>
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+        </svg>
+      );
+    case 'telegram':
+      return (
+        <svg viewBox="0 0 24 24" {...props}>
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+        </svg>
+      );
+    case 'linkedin':
+      return (
+        <svg viewBox="0 0 24 24" {...props}>
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
+// ── Video modal ───────────────────────────────────────────────────────────────
+function VideoModal({ open, onClose, lang }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) {
+      videoRef.current?.pause();
+      return undefined;
+    }
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [open]);
+
+  if (!open) return null;
+
+  return (
+    <div className="lp-modal-backdrop" onClick={onClose} role="presentation">
+      <div className="lp-video-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={lang === 'am' ? 'የዲሞ ቪዲዮ' : 'Demo video'}>
+        <button type="button" className="lp-modal-close" onClick={onClose} aria-label="Close">✕</button>
+        <div className="lp-video-frame">
+          <video
+            ref={videoRef}
+            className="lp-video-player"
+            controls
+            playsInline
+            preload="metadata"
+            poster="/videos/demo-poster.jpg"
+          >
+            <source src={DEMO_VIDEO_SRC} type="video/mp4" />
+            {lang === 'am'
+              ? 'የእርስዎ browser ቪዲዮን አይደግፍም።'
+              : 'Your browser does not support the video tag.'}
+          </video>
+        </div>
+        <p className="lp-video-caption">
+          {lang === 'am'
+            ? '3 ደቂቃ የHAGERE VOICE መድረክ ማሳያ'
+            : '3-minute HAGERE VOICE platform demo'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── Legal modal ───────────────────────────────────────────────────────────────
+function LegalModal({ type, lang, onClose }) {
+  const c = CONTENT[lang].legal;
+  const title = type === 'privacy' ? c.privacyTitle : c.termsTitle;
+  const items = type === 'privacy' ? c.privacy : c.terms;
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  return (
+    <div className="lp-modal-backdrop" onClick={onClose} role="presentation">
+      <div className="lp-legal-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="lp-legal-title">
+        <div className="lp-legal-header">
+          <h2 id="lp-legal-title">{title}</h2>
+          <button type="button" className="lp-modal-close" onClick={onClose} aria-label="Close">✕</button>
+        </div>
+        <div className="lp-legal-body">
+          <ul>
+            {items.map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ── Counter animation hook ────────────────────────────────────────────────────
 function useCounter(target, duration = 2000, start = false) {
@@ -267,11 +442,13 @@ function StatCard({ stat, inView }) {
 }
 
 // ── Main LandingPage ──────────────────────────────────────────────────────────
-export function LandingPage({ onEnterApp }) {
+export function LandingPage({ onEnterApp, onEnterAdmin }) {
   const [lang, setLang] = useState('en');
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [demoIdx, setDemoIdx] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [legalModal, setLegalModal] = useState(null);
   const c = CONTENT[lang];
 
   const [impactRef, impactInView] = useInView();
@@ -286,6 +463,17 @@ export function LandingPage({ onEnterApp }) {
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     setMenuOpen(false);
+  };
+
+  const openDemoVideo = () => {
+    setMenuOpen(false);
+    setVideoOpen(true);
+  };
+
+  const handleFooterLink = (key) => {
+    if (key === 'services') scrollTo('features');
+    else if (key === 'contact') scrollTo('contact');
+    else if (key === 'privacy' || key === 'terms') setLegalModal(key);
   };
 
   return (
@@ -307,12 +495,12 @@ export function LandingPage({ onEnterApp }) {
 
           <div className="lp-nav-actions">
             <div className="lp-lang-toggle">
-              <button className={lang==='am'?'active':''} onClick={() => setLang('am')}>🇪🇹 አማርኛ</button>
-              <button className={lang==='en'?'active':''} onClick={() => setLang('en')}>🇬🇧 English</button>
+              <button className={lang==='am'?'active':''} onClick={() => setLang('am')}>🇪🇹 አማ</button>
+              <button className={lang==='en'?'active':''} onClick={() => setLang('en')}>🇬🇧 EN</button>
             </div>
-            <button className="lp-btn-ghost" onClick={onEnterApp}>{c.nav.login}</button>
-            <button className="lp-btn-primary" onClick={onEnterApp}>{c.nav.start}</button>
-            <button className="lp-hamburger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
+            <button className="lp-btn-ghost lp-nav-login" onClick={onEnterApp}>{c.nav.login}</button>
+            <button className="lp-btn-primary lp-nav-start" onClick={onEnterApp}>{c.nav.start}</button>
+            <button type="button" className="lp-hamburger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu" aria-expanded={menuOpen}>
               {menuOpen ? '✕' : '☰'}
             </button>
           </div>
@@ -335,7 +523,7 @@ export function LandingPage({ onEnterApp }) {
             <p className="lp-hero-desc">{c.hero.desc}</p>
             <div className="lp-hero-btns">
               <button className="lp-btn-hero-primary" onClick={onEnterApp}>{c.hero.cta1}</button>
-              <button className="lp-btn-hero-ghost" onClick={() => scrollTo('demo')}>{c.hero.cta2}</button>
+              <button className="lp-btn-hero-ghost" onClick={openDemoVideo}>{c.hero.cta2}</button>
             </div>
             <div className="lp-hero-stats">
               {c.stats.map((s, i) => (
@@ -532,11 +720,27 @@ export function LandingPage({ onEnterApp }) {
             ))}
           </div>
           <div className="lp-demo-screen">
-            <div className="lp-demo-placeholder">
-              <span className="lp-demo-ph-icon">📱</span>
-              <p className="lp-demo-ph-title">{c.demo.screens[demoIdx]}</p>
-              <p className="lp-demo-ph-sub">{lang==='am'?'ቅጂ ምስሎች ቶሎ ይመጣሉ':'Screenshot coming soon'}</p>
-              <button className="lp-btn-primary" onClick={onEnterApp}>{lang==='am'?'አሁን ሞክሩ':'Try It Now'}</button>
+            <div className="lp-demo-video-wrap">
+              <video
+                className="lp-demo-video"
+                controls
+                playsInline
+                preload="metadata"
+                poster="/videos/demo-poster.jpg"
+              >
+                <source src={DEMO_VIDEO_SRC} type="video/mp4" />
+              </video>
+            </div>
+            <div className="lp-demo-actions">
+              <button type="button" className="lp-demo-play-btn" onClick={openDemoVideo}>
+                <span className="lp-demo-play-icon">▶</span>
+                <span>{lang === 'am' ? '3 ደቂቃ ማሳያ በሙሉ ማያ መልከት' : 'Watch 3-min Demo Fullscreen'}</span>
+              </button>
+              <p className="lp-demo-video-note">
+                {lang === 'am'
+                  ? 'የእርስዎን ቪዲዮ በ public/videos/hagere-demo.mp4 ውስጥ ይጨምሩ'
+                  : 'Add your video file at public/videos/hagere-demo.mp4'}
+              </p>
             </div>
           </div>
         </div>
@@ -601,7 +805,30 @@ export function LandingPage({ onEnterApp }) {
           <p className="lp-cta-desc">{c.cta.desc}</p>
           <div className="lp-cta-btns">
             <button className="lp-btn-cta-primary" onClick={onEnterApp}>{c.cta.btn1}</button>
-            <button className="lp-btn-cta-ghost" onClick={() => scrollTo('demo')}>{c.cta.btn2}</button>
+            <button className="lp-btn-cta-ghost" onClick={openDemoVideo}>{c.cta.btn2}</button>
+          </div>
+          <div className="lp-contact-cards">
+            <div className="lp-contact-card">
+              <span>📧</span>
+              <div>
+                <strong>{c.contactInfo.title}</strong>
+                <a href={`mailto:${c.contactInfo.email}`}>{c.contactInfo.email}</a>
+              </div>
+            </div>
+            <div className="lp-contact-card">
+              <span>✈️</span>
+              <div>
+                <strong>Telegram</strong>
+                <a href="https://t.me/SamrawitAbebaw" target="_blank" rel="noopener noreferrer">{c.contactInfo.telegram}</a>
+              </div>
+            </div>
+            <div className="lp-contact-card">
+              <span>📍</span>
+              <div>
+                <strong>{lang === 'am' ? 'አድራሻ' : 'Location'}</strong>
+                <span>{c.contactInfo.location}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -617,22 +844,36 @@ export function LandingPage({ onEnterApp }) {
               </div>
               <p className="lp-footer-tagline">{c.footer.tagline}</p>
               <div className="lp-social">
-                {['Telegram','Facebook','Instagram','LinkedIn'].map(s => (
-                  <a key={s} href="#" className="lp-social-btn" aria-label={s}>
-                    {s==='Telegram'?'✈️':s==='Facebook'?'📘':s==='Instagram'?'📷':'💼'}
+                {SOCIAL_LINKS.map(({ id, href, label }) => (
+                  <a
+                    key={id}
+                    href={href}
+                    className="lp-social-btn"
+                    aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SocialIcon id={id} />
                   </a>
                 ))}
               </div>
             </div>
-            <div className="lp-footer-links">
-              {c.footer.links.map((l,i) => <a key={i} href="#" className="lp-footer-link">{l}</a>)}
-            </div>
+            <nav className="lp-footer-links" aria-label="Footer">
+              {c.footer.links.map(({ key, label }) => (
+                <button key={key} type="button" className="lp-footer-link" onClick={() => handleFooterLink(key)}>
+                  {label}
+                </button>
+              ))}
+            </nav>
           </div>
           <div className="lp-footer-bottom">
             <p>{c.footer.copy}</p>
           </div>
         </div>
       </footer>
+
+      {videoOpen && <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} lang={lang} />}
+      {legalModal && <LegalModal type={legalModal} lang={lang} onClose={() => setLegalModal(null)} />}
     </div>
   );
 }

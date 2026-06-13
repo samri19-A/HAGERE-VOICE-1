@@ -1,35 +1,80 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 export function useAuth() {
   const [user,      setUser]      = useState(null);
+  const [role,      setRole]      = useState(null);   // 'admin' | 'user' | null
   const [loading,   setLoading]   = useState(true);
   const [authError, setAuthError] = useState(null);
 
-  // ── Init ──────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user ?? null);
-      setLoading(false);
-    });
+  // Prevent double-init race between getSession + onAuthStateChange
+  const initialised = useRef(false);
 
-    // Listen for auth state changes (login, logout, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+  const fetchRole = useCallback(async (uid) => {
+    if (!uid) { setRole(null); return; }
+    try {
+      // Use security-definer RPC — bypasses RLS, always works
+      const { data: isAdminResult } = await supabase.rpc('is_admin');
+      if (isAdminResult === true) {
+        setRole('admin');
+      } else {
+        setRole('user');
+      }
+    } catch {
+      setRole('user');
+    }
   }, []);
 
-  // ── Sign up ───────────────────────────────────────────────────────────────
+  // ── Init ──────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    // onAuthStateChange fires immediately with the current session,
+    // so we can rely on it alone — skip the separate getSession call.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        const u = session?.user ?? null;
+        setUser(u);
+        await fetchRole(u?.id);
+        // Only set loading=false after the very first resolution
+        if (!initialised.current) {
+          initialised.current = true;
+          setLoading(false);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [fetchRole]);
+
+  // ── Admin sign in (email + password) ─────────────────────────────────────
+  // Role check happens inside onAuthStateChange above,
+  // but we do an early check here so we can give immediate feedback.
+  const adminSignIn = useCallback(async ({ email, password }) => {
+    setAuthError(null);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setAuthError(error.message);
+      throw error;
+    }
+
+    // Check role immediately using security-definer RPC — bypasses RLS
+    const { data: isAdminResult } = await supabase.rpc('is_admin');
+
+    if (!isAdminResult) {
+      // Sign out silently — listener will update state
+      await supabase.auth.signOut();
+      const denied = new Error('admin_access_denied');
+      setAuthError(denied.message);
+      throw denied;
+    }
+
+    // Already signed in — listener will update user + role state
+    return data;
+  }, []);
+
+  // ── Sign up (phone-based fake email) ─────────────────────────────────────
   const signUp = useCallback(async ({ email, password, fullName, shopName }) => {
     setAuthError(null);
-
-    // Extract phone number from the fake email we use (0912345678@hagere.local)
     const phoneNumber = email.replace('@hagere.local', '');
-
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -37,24 +82,15 @@ export function useAuth() {
         data: {
           full_name:    fullName,
           shop_name:    shopName || fullName,
-          phone_number: phoneNumber,   // store the real phone
+          phone_number: phoneNumber,
         },
       },
     });
     if (error) { setAuthError(error.message); throw error; }
-
-    // Also update the auth phone field if Supabase supports it
-    // (best-effort, no throw on failure)
-    if (data?.user) {
-      await supabase.auth.updateUser({
-        phone: `+251${phoneNumber.slice(1)}`, // convert 09... → +2519...
-      }).catch(() => {});
-    }
-
     return data;
   }, []);
 
-  // ── Sign in ───────────────────────────────────────────────────────────────
+  // ── Sign in (phone-based fake email) ─────────────────────────────────────
   const signIn = useCallback(async ({ email, password }) => {
     setAuthError(null);
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -66,8 +102,18 @@ export function useAuth() {
   const signOut = useCallback(async () => {
     setAuthError(null);
     await supabase.auth.signOut();
-    setUser(null);
+    // listener sets user/role to null
   }, []);
 
-  return { user, loading, authError, signUp, signIn, signOut };
+  return {
+    user,
+    role,
+    isAdmin: role === 'admin',
+    loading,
+    authError,
+    adminSignIn,
+    signUp,
+    signIn,
+    signOut,
+  };
 }
