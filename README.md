@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HAGERE VOICE
 
 Offline-first Amharic voice assistant for women artisans to manage inventory.
@@ -85,3 +86,7 @@ npm run build
 ```
 
 Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in your host.
+=======
+# HAGERE-VOICE-1
+ASSISTANCE
+>>>>>>> 6bd9364 (Initial commit)
