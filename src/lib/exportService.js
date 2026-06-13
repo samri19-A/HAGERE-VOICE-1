@@ -36,7 +36,7 @@ export function exportCSV(items) {
   URL.revokeObjectURL(a.href);
 }
 
-// ── PDF export ────────────────────────────────────────────────────────────────
+// ── PDF export ──────────────────────────────────────────────────────────────
 export async function exportPDF(items = [], commands = [], lang = 'am', shopInfo = null) {
   // Build the HTML report in a hidden off-screen div
   const container = document.createElement('div');
@@ -45,21 +45,26 @@ export async function exportPDF(items = [], commands = [], lang = 'am', shopInfo
     width: 794px; background: #fff;
     font-family: 'Noto Sans Ethiopic', system-ui, sans-serif;
     color: #1f2937; font-size: 13px; line-height: 1.5;
+    z-index: -9999;
+    pointer-events: none;
   `;
   container.innerHTML = buildReportHTML(items, commands, lang, shopInfo);
   document.body.appendChild(container);
 
-  // Wait for fonts to load
-  await document.fonts.ready;
-  await new Promise(r => setTimeout(r, 300));
-
   try {
+    // Wait for fonts to load
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+    await new Promise(r => setTimeout(r, 500));
+
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
       backgroundColor: '#ffffff',
       logging: false,
       windowWidth: 794,
+      allowTaint: true,
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
@@ -86,8 +91,13 @@ export async function exportPDF(items = [], commands = [], lang = 'am', shopInfo
     }
 
     doc.save(`hagere-voice-report-${fmtFile()}.pdf`);
+  } catch (error) {
+    console.error('PDF export error:', error);
+    throw error;
   } finally {
-    document.body.removeChild(container);
+    if (container.parentNode) {
+      document.body.removeChild(container);
+    }
   }
 }
 
