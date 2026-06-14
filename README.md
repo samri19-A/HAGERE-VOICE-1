@@ -18,9 +18,9 @@ A polished, offline-first Amharic voice assistant that empowers women artisans t
 
 ✨ Live demo
 
-If you have a deployed frontend, add the link below. Replace the placeholder with your live demo URL:
+If you want to see the live demo Please click the link below. :
 
-[🔗 Live demo (replace this URL)](https://example.com)
+[🔗 Live demo ](https://hagere-voice-1-cg8m-oze75v8vh-samrawit-s-projects1.vercel.app/)
 
 ---
 
