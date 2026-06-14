@@ -1,42 +1,58 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 # HAGERE VOICE
 
-Offline-first Amharic voice assistant for women artisans to manage inventory.
+[![Project Status](https://img.shields.io/badge/status-beta-yellow.svg)](https://github.com/samri19-A/HAGERE-VOICE-1)
+[![Languages](https://img.shields.io/github/languages/top/samri19-A/HAGERE-VOICE-1)](https://github.com/samri19-A/HAGERE-VOICE-1)
+[![Stars](https://img.shields.io/github/stars/samri19-A/HAGERE-VOICE-1?style=social)](https://github.com/samri19-A/HAGERE-VOICE-1/stargazers)
 
-## MVP demo flow (for judges)
 
-1. User taps **ድምጽ ተናገር** and says an Amharic command, e.g. `ሱሪ ሁለት ጨመር`
-2. Browser speech-to-text captures the transcript
-3. `amharicParser.js` extracts action (`ጨመር`), item (`ሱሪ`), quantity (`2`)
-4. `apply_voice_command` RPC updates `inventory_items.quantity` and logs to `voice_commands`
-5. UI shows before → after quantity change in real time
+A polished, offline-first Amharic voice assistant that empowers women artisans to manage inventory with voice — fast, reliable, and beautiful.
 
-## Quick start
+---
+
+🎯 Why this project matters
+
+- Designed for accessibility and low-connectivity environments: works offline with a local demo mode and syncs to Supabase when online.
+- Local-first UX for non-technical users (voice-first controls in Amharic) so artisans can manage stock without typing.
+- Audit-ready: every voice command is logged so changes are traceable for training and trust.
+
+---
+
+✨ Live demo
+
+If you have a deployed frontend, add the link below. Replace the placeholder with your live demo URL:
+
+[🔗 Live demo (replace this URL)](https://example.com)
+
+---
+
+🚀 Quick start (developer)
+
+1. Install dependencies
 
 ```bash
 npm install
-cp .env.example .env   # add Supabase URL + anon key
+cp .env.example .env   # add Supabase URL + anon key when ready
 npm run dev
 ```
 
-Without Supabase, the app runs in **local demo mode** (localStorage) so you can test the voice flow immediately.
+2. Open the app in Chrome (desktop recommended for best Web Speech API support) and try the voice button: press **ድምጽ ተናገር** and speak an Amharic command.
 
-## Supabase setup (required for live demo link)
+Notes:
+- Without Supabase configured the app runs in a local demo mode (localStorage queue) so you can validate the voice flow immediately.
 
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Open **SQL Editor** and run `supabase/migrations/001_inventory.sql`
-3. Enable **Realtime** for `inventory_items` and `voice_commands` (Database → Replication)
-4. Copy project URL and anon key into `.env`:
+---
 
-```
-VITE_SUPABASE_URL=https://xxxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJ...
-```
+🧭 MVP demo flow (short)
 
-5. Deploy frontend to Vercel/Netlify and share the URL
+1. The user taps **ድምጽ ተናገር** and speaks an Amharic instruction (e.g., `ሱሪ ሁለት ጨመር`).
+2. Browser speech-to-text captures Amharic transcript (am-ET locale preferred).
+3. amharicParser.js extracts { action, itemName, quantity }.
+4. apply_voice_command RPC updates `inventory_items` and writes an audit to `voice_commands`.
+5. UI shows before → after quantity change in real time using Supabase Realtime.
 
-## Project structure
+---
+
+📦 Project structure (high level)
 
 ```
 src/
@@ -55,132 +71,72 @@ src/
     └── CommandLog.jsx          # Shows quantity_before → quantity_after
 ```
 
-## Supported Amharic commands
+---
+
+🗂 Supported Amharic commands (examples)
 
 | Command | Meaning |
-|---------|---------|
+|---|---|
 | `ሱሪ ሁለት ጨመር` | Add 2 dresses |
 | `ቀሚስ አንድ ቀንስ` | Subtract 1 shirt |
 | `ሻማ አምስት ጨመር` | Add 5 scarves |
 
-**Add keywords:** ጨመር, ጨምር, አክል  
-**Subtract keywords:** ቀንስ, ቀንሳ, አውርድ  
-**Numbers:** አንድ(1) … አስር(10), or digits `5`, `12`
+Keywords:
+- Add: ጨመር, ጨምር, አክል
+- Subtract: ቀንስ, ቀንሳ, አውርድ
+- Numbers: አንድ (1) … አስር (10), also supports digits `5`, `12`
 
-## Database tables
+---
+
+🗄 Database
 
 - `inventory_items` — current stock per item
-- `voice_commands` — audit log with `quantity_before` / `quantity_after` for demo proof
+- `voice_commands` — audit log with `quantity_before` / `quantity_after`
 
-## Demo tips (June 14)
-
-- Use **Chrome** on desktop for best `am-ET` speech recognition
-- Keep **Manual command input** as backup if mic quality is poor
-- Show Supabase **Table Editor** side-by-side: speak → row updates live
-- Record a 30s screen capture: voice → parser → DB → UI refresh
-
-## Deploy
-
-```bash
-npm run build
-# Upload dist/ to Vercel, or: npx vercel
-```
-
-Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in your host.
-=======
-# HAGERE-VOICE-1
-ASSISTANCE
->>>>>>> 6bd9364 (Initial commit)
-=======
-# HAGERE-VOICE-1
-ASSISTANCE
-=======
-# HAGERE VOICE
-
-Offline-first Amharic voice assistant for women artisans to manage inventory.
-
-## MVP demo flow (for judges)
-
-1. User taps **ድምጽ ተናገር** and says an Amharic command, e.g. `ሱሪ ሁለት ጨመር`
-2. Browser speech-to-text captures the transcript
-3. `amharicParser.js` extracts action (`ጨመር`), item (`ሱሪ`), quantity (`2`)
-4. `apply_voice_command` RPC updates `inventory_items.quantity` and logs to `voice_commands`
-5. UI shows before → after quantity change in real time
-
-## Quick start
-
-```bash
-npm install
-cp .env.example .env   # add Supabase URL + anon key
-npm run dev
-```
-
-Without Supabase, the app runs in **local demo mode** (localStorage) so you can test the voice flow immediately.
-
-## Supabase setup (required for live demo link)
-
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Open **SQL Editor** and run `supabase/migrations/001_inventory.sql`
-3. Enable **Realtime** for `inventory_items` and `voice_commands` (Database → Replication)
-4. Copy project URL and anon key into `.env`:
+Supabase setup (for full live demo):
+1. Create a free project at https://supabase.com
+2. Open SQL Editor and run `supabase/migrations/001_inventory.sql`
+3. Enable Realtime for `inventory_items` and `voice_commands` (Database → Replication)
+4. Add the project URL and anon key to `.env`:
 
 ```
 VITE_SUPABASE_URL=https://xxxx.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJ...
 ```
 
-5. Deploy frontend to Vercel/Netlify and share the URL
+---
 
-## Project structure
+💡 Tips for a compelling demo
 
-```
-src/
-├── lib/
-│   ├── amharicParser.js    # Voice transcript → { action, itemName, quantity }
-│   ├── inventoryService.js # Supabase RPC + offline queue
-│   ├── offlineQueue.js     # localStorage queue when offline
-│   └── supabase.js         # Client config
-├── hooks/
-│   ├── useVoiceCommand.js  # Web Speech API (am-ET)
-│   └── useInventory.js     # Fetch + realtime + apply commands
-└── components/
-    ├── VoiceButton.jsx
-    ├── ManualCommandInput.jsx  # Fallback for demo reliability
-    ├── InventoryList.jsx
-    └── CommandLog.jsx          # Shows quantity_before → quantity_after
-```
+- Use Chrome on desktop for the best am-ET speech recognition.
+- Keep the Manual Command Input visible as a reliable fallback during demos.
+- Show Supabase Table Editor live: speak → row updates → UI reacts.
+- Record a short screen capture (30–60s) showing the full flow.
 
-## Supported Amharic commands
+---
 
-| Command | Meaning |
-|---------|---------|
-| `ሱሪ ሁለት ጨመር` | Add 2 dresses |
-| `ቀሚስ አንድ ቀንስ` | Subtract 1 shirt |
-| `ሻማ አምስት ጨመር` | Add 5 scarves |
+🧩 Extending the project
 
-**Add keywords:** ጨመር, ጨምር, አክል  
-**Subtract keywords:** ቀንስ, ቀንሳ, አውርድ  
-**Numbers:** አንድ(1) … አስር(10), or digits `5`, `12`
+Ideas that make the product more lovable to developers and stakeholders:
+- CI/CD friendly deploys and a one-click demo deploy (Vercel/Netlify).
+- Mobile-friendly UI and microphone permission flow improvements.
+- Localization pipeline for additional Ethiopian languages.
+- Analytics dashboard for voice-command accuracy and common phrases.
 
-## Database tables
+---
 
-- `inventory_items` — current stock per item
-- `voice_commands` — audit log with `quantity_before` / `quantity_after` for demo proof
+🤝 Contributing
 
-## Demo tips (June 14)
+Contributions are welcome! Please open issues for bugs and feature requests, and submit PRs for fixes or improvements. Include a short description of what you changed and why.
 
-- Use **Chrome** on desktop for best `am-ET` speech recognition
-- Keep **Manual command input** as backup if mic quality is poor
-- Show Supabase **Table Editor** side-by-side: speak → row updates live
-- Record a 30s screen capture: voice → parser → DB → UI refresh
+---
 
-## Deploy
+📜 License & Contact
 
-```bash
-npm run build
-# Upload dist/ to Vercel, or: npx vercel
-```
+This repository currently does not include a license file — add a LICENSE if you want to clarify terms for contributors and enterprises.
 
-Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in your host.
->>>>>>> b0ad0a1 (Initial commit)
->>>>>>> 2c8a481 (Initial commit)
+Maintainer: @samri19-A
+
+---
+
+Thank you for building something that empowers local artisans — simple UX, offline resilience, and careful auditing make this a product people can trust.
