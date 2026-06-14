@@ -4,7 +4,6 @@
 [![Languages](https://img.shields.io/github/languages/top/samri19-A/HAGERE-VOICE-1)](https://github.com/samri19-A/HAGERE-VOICE-1)
 [![Stars](https://img.shields.io/github/stars/samri19-A/HAGERE-VOICE-1?style=social)](https://github.com/samri19-A/HAGERE-VOICE-1/stargazers)
 
-
 A polished, offline-first Amharic voice assistant that empowers women artisans to manage inventory with voice — fast, reliable, and beautiful.
 
 ---
@@ -52,24 +51,46 @@ Notes:
 
 ---
 
-📦 Project structure (high level)
+📦 Project structure (current)
+
+This repository has been updated since earlier docs. Below is the current, authoritative structure from the repository root and the "src/" folder.
+
+Root (top-level):
+
+```
+.env.example
+.gitignore
+.vscode/
+index.html
+package.json
+package-lock.json
+vite.config.js
+vercel.json
+public/
+supabase/
+src/
+README.md
+```
+
+src/ (current source layout):
 
 ```
 src/
-├── lib/
-│   ├── amharicParser.js    # Voice transcript → { action, itemName, quantity }
-│   ├── inventoryService.js # Supabase RPC + offline queue
-│   ├── offlineQueue.js     # localStorage queue when offline
-│   └── supabase.js         # Client config
-├── hooks/
-│   ├── useVoiceCommand.js  # Web Speech API (am-ET)
-│   └── useInventory.js     # Fetch + realtime + apply commands
-└── components/
-    ├── VoiceButton.jsx
-    ├── ManualCommandInput.jsx  # Fallback for demo reliability
-    ├── InventoryList.jsx
-    └── CommandLog.jsx          # Shows quantity_before → quantity_after
+├── App.css
+├── App.jsx
+├── Root.jsx
+├── main.jsx
+├── components/      # React components (UI pieces)
+├── hooks/           # Custom React hooks
+├── lib/             # Utility libraries, parsers, services
+└── pages/           # Route pages (if used)
 ```
+
+Notes:
+- The `components/`, `hooks/`, `lib/`, and `pages/` directories contain the current app code; the examples in earlier documentation remain conceptually valid but file locations and names might have changed during development.
+- Use `src/App.jsx` and `src/Root.jsx` as the application entry points when inspecting runtime behavior.
+
+If you want, I can list the files inside `src/components`, `src/hooks`, and `src/lib` explicitly and add that expanded tree to this README.
 
 ---
 
