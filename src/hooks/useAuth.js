@@ -71,10 +71,10 @@ export function useAuth() {
     return data;
   }, []);
 
-  // ── Sign up (phone-based fake email) ─────────────────────────────────────
-  const signUp = useCallback(async ({ email, password, fullName, shopName }) => {
+  // ── Sign up (phone-based or email-based) ─────────────────────────────────
+  const signUp = useCallback(async ({ email, password, fullName, shopName, phoneNumber }) => {
     setAuthError(null);
-    const phoneNumber = email.replace('@hagere.local', '');
+    const resolvedPhone = phoneNumber || (email.endsWith('@hagere.local') ? email.replace('@hagere.local', '') : null);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -82,7 +82,7 @@ export function useAuth() {
         data: {
           full_name:    fullName,
           shop_name:    shopName || fullName,
-          phone_number: phoneNumber,
+          phone_number: resolvedPhone,
         },
       },
     });

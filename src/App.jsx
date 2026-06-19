@@ -20,8 +20,7 @@ import { t }                from './lib/i18n';
 import { speakConfirmation, speakError } from './lib/tts';
 import './App.css';
 
-export default function App({ user, onSignOut }) {
-  const [lang,          setLang]          = useState('am');
+export default function App({ user, lang, onLangChange, onSignOut }) {
   const [processing,    setProcessing]    = useState(false);
   const [lastChangedId, setLastChangedId] = useState(null);
   const [voiceError,    setVoiceError]    = useState(null);
@@ -176,7 +175,7 @@ export default function App({ user, onSignOut }) {
                 📲 {t(lang, 'installApp')}
               </button>
             )}
-            <LanguageSwitcher lang={lang} onChange={setLang} />
+            <LanguageSwitcher lang={lang} onChange={onLangChange} />
             <div className="user-menu">
               <button
                 type="button"

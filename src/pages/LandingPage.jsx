@@ -444,8 +444,7 @@ function StatCard({ stat, inView }) {
 }
 
 // ── Main LandingPage ──────────────────────────────────────────────────────────
-export function LandingPage({ onEnterApp, onEnterAdmin }) {
-  const [lang, setLang] = useState('en');
+export function LandingPage({ lang, onLangChange, onEnterApp, onEnterAdmin }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [demoIdx, setDemoIdx] = useState(0);
@@ -497,8 +496,8 @@ export function LandingPage({ onEnterApp, onEnterAdmin }) {
 
           <div className="lp-nav-actions">
             <div className="lp-lang-toggle">
-              <button className={lang==='am'?'active':''} onClick={() => setLang('am')}>🇪🇹 አማ</button>
-              <button className={lang==='en'?'active':''} onClick={() => setLang('en')}>🇬🇧 EN</button>
+              <button className={lang==='am'?'active':''} onClick={() => onLangChange('am')}>🇪🇹 አማ</button>
+              <button className={lang==='en'?'active':''} onClick={() => onLangChange('en')}>🇬🇧 EN</button>
             </div>
             <button className="lp-btn-ghost lp-nav-login" onClick={onEnterApp}>{c.nav.login}</button>
             <button className="lp-btn-primary lp-nav-start" onClick={onEnterApp}>{c.nav.start}</button>

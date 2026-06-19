@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { t } from '../lib/i18n';
+import { supabase } from '../lib/supabase';
 import './AuthPage.css';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -255,6 +257,7 @@ function SignInFlow({ lang, onSuccess, onSwitch, signIn }) {
   const [pin,     setPin]     = useState('');
   const [loading, setLoading] = useState(false);
   const [err,     setErr]     = useState('');
+  const [showResetInfo, setShowResetInfo] = useState(false);
 
   const phoneDigits = phone.replace(/\D/g, '');
   const canNextPhone = isValidEthiopianPhone(phoneDigits);
@@ -268,7 +271,7 @@ function SignInFlow({ lang, onSuccess, onSwitch, signIn }) {
     setErr('');
     try {
       await signIn({ email: phoneToEmail(phoneDigits), password: pinToPassword(pin) });
-    } catch {
+    } catch (ex) {
       setErr(lang === 'am' ? '❌ ስልክ ቁጥር ወይም PIN ትክክል አይደለም' : '❌ Wrong phone number or PIN');
       setPin('');
     } finally {
@@ -288,7 +291,7 @@ function SignInFlow({ lang, onSuccess, onSwitch, signIn }) {
     try {
       await signIn({ email: phoneToEmail(phoneDigits), password: pinToPassword(p) });
       onSuccess();
-    } catch {
+    } catch (ex) {
       setErr(lang === 'am' ? '❌ ስልክ ቁጥር ወይም PIN ትክክል አይደለም' : '❌ Wrong phone number or PIN');
       setPin('');
     } finally {
@@ -319,9 +322,19 @@ function SignInFlow({ lang, onSuccess, onSwitch, signIn }) {
           <PinStep lang={lang} pin={pin} onChange={handlePinChange} />
           {loading && <p className="auth-loading">…</p>}
           {err && <p className="auth-error">{err}</p>}
-          <button type="button" className="auth-back-btn" onClick={() => { setStep(0); setPin(''); setErr(''); }}>
-            ← {lang === 'am' ? 'ተመለስ' : 'Back'}
-          </button>
+          {showResetInfo && (
+            <p className="phone-reset-info-banner">
+              ℹ️ {t(lang, 'authPhoneResetInstruction')}
+            </p>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '100%', marginTop: '0.5rem' }}>
+            <button type="button" className="auth-forgot-link" style={{ fontSize: '0.8rem', alignSelf: 'center', marginBottom: '0.25rem', background: 'none', border: 'none', color: '#7b2d4e', textDecoration: 'underline', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setShowResetInfo(true)}>
+              {t(lang, 'authForgotPinLink')}
+            </button>
+            <button type="button" className="auth-back-btn" onClick={() => { setStep(0); setPin(''); setErr(''); setShowResetInfo(false); }}>
+              ← {lang === 'am' ? 'ተመለስ' : 'Back'}
+            </button>
+          </div>
         </>
       )}
 
@@ -446,10 +459,277 @@ function SignUpFlow({ lang, onSuccess, onSwitch, signUp, signIn }) {
   );
 }
 
+// ── Email Sign-in flow ─────────────────────────────────────────────────────────
+function EmailSignInFlow({ lang, onSuccess, onSwitch, onForgotPassword, signIn }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || !password) return;
+    setLoading(true);
+    setErr('');
+    try {
+      await signIn({ email: email.trim(), password });
+      onSuccess();
+    } catch (ex) {
+      setErr(lang === 'am' ? '❌ ኢሜይል ወይም የይለፍ ቃል ስህተት ነው' : '❌ Wrong email or password');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isFormValid = email.trim() && password.length >= 6;
+
+  return (
+    <form className="auth-flow" onSubmit={handleLogin}>
+      <div className="name-field">
+        <label>{t(lang, 'authEmailLabel')} *</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="email@example.com"
+          required
+          autoComplete="email"
+        />
+      </div>
+
+      <div className="name-field">
+        <label>{t(lang, 'authPasswordLabel')} *</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+          required
+          autoComplete="current-password"
+        />
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '0.2rem 0 0.5rem' }}>
+        <button type="button" className="auth-forgot-link" style={{ fontSize: '0.8rem', background: 'none', border: 'none', color: '#7b2d4e', textDecoration: 'underline', cursor: 'pointer', fontWeight: 'bold' }} onClick={onForgotPassword}>
+          {t(lang, 'authForgotPasswordLink')}
+        </button>
+      </div>
+
+      {err && <p className="auth-error">{err}</p>}
+
+      <button type="submit" className="auth-next-btn" disabled={loading || !isFormValid}>
+        {loading ? <span className="auth-spinner" /> : t(lang, 'authLoginBtn')}
+      </button>
+
+      <p className="auth-switch-row">
+        {lang === 'am' ? 'አካውንት የለዎትም?' : "Don't have an account?"}{' '}
+        <button type="button" className="auth-link" onClick={onSwitch}>
+          {lang === 'am' ? 'ይመዝገቡ' : 'Sign up'}
+        </button>
+      </p>
+    </form>
+  );
+}
+
+// ── Email Sign-up flow ─────────────────────────────────────────────────────────
+function EmailSignUpFlow({ lang, onSuccess, onSwitch, signUp, signIn }) {
+  const [name, setName] = useState('');
+  const [shopName, setShopName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim() || !password || password !== confirmPassword) {
+      return;
+    }
+    setLoading(true);
+    setErr('');
+    try {
+      const result = await signUp({
+        email: email.trim(),
+        password,
+        fullName: name.trim(),
+        shopName: shopName.trim() || name.trim() || 'የእኔ ሱቅ',
+      });
+      if (!result?.session) {
+        await signIn({ email: email.trim(), password });
+      }
+      onSuccess();
+    } catch (ex) {
+      const msg = ex.message?.includes('already') || ex.message?.includes('exists')
+        ? t(lang, 'authEmailExists')
+        : (lang === 'am' ? '❌ ምዝገባ አልተሳካም — እንደገና ይሞክሩ' : '❌ Registration failed — try again');
+      setErr(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isFormValid = name.trim() && email.trim() && password.length >= 6 && password === confirmPassword;
+
+  return (
+    <form className="auth-flow" onSubmit={handleRegister}>
+      <div className="name-field">
+        <label>{lang === 'am' ? 'ሙሉ ስም' : 'Your Name'} *</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder={lang === 'am' ? 'ለምሳሌ፦ አልማዝ ተሰማ' : 'e.g. Almaz Tesema'}
+          required
+        />
+      </div>
+
+      <div className="name-field">
+        <label>{lang === 'am' ? 'የሱቅ ስም (አማራጭ)' : 'Shop Name (optional)'}</label>
+        <input
+          type="text"
+          value={shopName}
+          onChange={(e) => setShopName(e.target.value)}
+          placeholder={lang === 'am' ? 'ለምሳሌ፦ ሀጌሬ ልብስ ቤት' : 'e.g. Hagere Boutique'}
+        />
+      </div>
+
+      <div className="name-field">
+        <label>{t(lang, 'authEmailLabel')} *</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="email@example.com"
+          required
+          autoComplete="email"
+        />
+      </div>
+
+      <div className="name-field">
+        <label>{t(lang, 'authPasswordLabel')} *</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+          required
+          autoComplete="new-password"
+        />
+      </div>
+
+      <div className="name-field">
+        <label>{t(lang, 'authConfirmPasswordLabel')} *</label>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="••••••••"
+          required
+          autoComplete="new-password"
+        />
+      </div>
+
+      {password && password.length < 6 && (
+        <p className="auth-error" style={{ fontSize: '0.78rem', margin: '0.2rem 0' }}>{t(lang, 'authPasswordMinLength')}</p>
+      )}
+
+      {password && confirmPassword && password !== confirmPassword && (
+        <p className="auth-error" style={{ fontSize: '0.78rem', margin: '0.2rem 0' }}>{t(lang, 'authPasswordsMismatch')}</p>
+      )}
+
+      {err && <p className="auth-error">{err}</p>}
+
+      <button type="submit" className="auth-next-btn" disabled={loading || !isFormValid}>
+        {loading ? <span className="auth-spinner" /> : t(lang, 'authSignupBtn')}
+      </button>
+
+      <p className="auth-switch-row">
+        {lang === 'am' ? 'አካውንት አለዎ?' : 'Already have an account?'}{' '}
+        <button type="button" className="auth-link" onClick={onSwitch}>
+          {lang === 'am' ? 'ይግቡ' : 'Sign in'}
+        </button>
+      </p>
+    </form>
+  );
+}
+
+// ── Email Forgot Password flow ──────────────────────────────────────────────────
+function EmailForgotPasswordFlow({ lang, onBack }) {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setLoading(true);
+    setErr('');
+    setSuccess(false);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: window.location.origin,
+      });
+      if (error) throw error;
+      setSuccess(true);
+    } catch (ex) {
+      setErr(lang === 'am' ? '❌ የይለፍ ቃል ማደሻ መላክ አልተሳካም። እባክዎ እንደገና ይሞክሩ።' : '❌ Failed to send reset link. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="auth-flow">
+      <div className="auth-logo">🔑</div>
+      <h2 className="step-title">
+        {lang === 'am' ? 'የይለፍ ቃል መቀየር' : 'Reset Password'}
+      </h2>
+      <p className="step-hint">
+        {t(lang, 'authEmailResetInstruction')}
+      </p>
+
+      {success ? (
+        <div className="auth-success-banner" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', padding: '0.75rem', fontSize: '0.85rem', color: '#166534', textAlign: 'center', margin: '0.5rem 0' }}>
+          ✅ {t(lang, 'authResetLinkSent')}
+          <button type="button" className="auth-back-btn" onClick={onBack} style={{ marginTop: '1.25rem' }}>
+            ← {t(lang, 'authBackToLogin')}
+          </button>
+        </div>
+      ) : (
+        <form className="email-flow-form" onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <div className="name-field">
+            <label>{t(lang, 'authEmailLabel')} *</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="email@example.com"
+              required
+              autoFocus
+            />
+          </div>
+
+          {err && <p className="auth-error">{err}</p>}
+
+          <button type="submit" className="auth-next-btn" disabled={loading || !email.trim()}>
+            {loading ? <span className="auth-spinner" /> : t(lang, 'authSendResetLink')}
+          </button>
+
+          <button type="button" className="auth-back-btn" onClick={onBack}>
+            ← {t(lang, 'authBackToLogin')}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
 // ── Main AuthPage ─────────────────────────────────────────────────────────────
-export function AuthPage({ onAuthSuccess, onBack }) {
-  const [mode, setMode] = useState('login');
-  const [lang, setLang] = useState('am');
+export function AuthPage({ lang, onLangChange, onAuthSuccess, onBack }) {
+  const [mode, setMode] = useState('login'); // 'login' | 'signup' | 'forgot-password'
+  const [authType, setAuthType] = useState('phone'); // 'phone' | 'email'
   const { signIn, signUp } = useAuth();
 
   return (
@@ -464,7 +744,7 @@ export function AuthPage({ onAuthSuccess, onBack }) {
           </button>
         ) : <span />}
         <div className="auth-lang">
-          <LanguageSwitcher lang={lang} onChange={setLang} />
+          <LanguageSwitcher lang={lang} onChange={onLangChange} />
         </div>
       </div>
 
@@ -477,10 +757,67 @@ export function AuthPage({ onAuthSuccess, onBack }) {
           </p>
         </div>
 
-        {mode === 'login'
-          ? <SignInFlow lang={lang} onSuccess={onAuthSuccess} onSwitch={() => setMode('signup')} signIn={signIn} />
-          : <SignUpFlow lang={lang} onSuccess={onAuthSuccess} onSwitch={() => setMode('login')} signUp={signUp} signIn={signIn} />
-        }
+        {/* Only show tab selector if not in forgot-password mode */}
+        {mode !== 'forgot-password' && (
+          <div className="auth-type-tabs">
+            <button
+              type="button"
+              className={`auth-type-tab ${authType === 'phone' ? 'active' : ''}`}
+              onClick={() => setAuthType('phone')}
+            >
+              {t(lang, 'authPhoneTab')}
+            </button>
+            <button
+              type="button"
+              className={`auth-type-tab ${authType === 'email' ? 'active' : ''}`}
+              onClick={() => setAuthType('email')}
+            >
+              {t(lang, 'authEmailTab')}
+            </button>
+          </div>
+        )}
+
+        {mode === 'forgot-password' ? (
+          <EmailForgotPasswordFlow
+            lang={lang}
+            onBack={() => setMode('login')}
+          />
+        ) : authType === 'phone' ? (
+          mode === 'login' ? (
+            <SignInFlow
+              lang={lang}
+              onSuccess={onAuthSuccess}
+              onSwitch={() => setMode('signup')}
+              signIn={signIn}
+            />
+          ) : (
+            <SignUpFlow
+              lang={lang}
+              onSuccess={onAuthSuccess}
+              onSwitch={() => setMode('login')}
+              signUp={signUp}
+              signIn={signIn}
+            />
+          )
+        ) : (
+          mode === 'login' ? (
+            <EmailSignInFlow
+              lang={lang}
+              onSuccess={onAuthSuccess}
+              onSwitch={() => setMode('signup')}
+              onForgotPassword={() => setMode('forgot-password')}
+              signIn={signIn}
+            />
+          ) : (
+            <EmailSignUpFlow
+              lang={lang}
+              onSuccess={onAuthSuccess}
+              onSwitch={() => setMode('login')}
+              signUp={signUp}
+              signIn={signIn}
+            />
+          )
+        )}
       </div>
 
       <p className="auth-brand">

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { t } from '../lib/i18n';
 import './AdminLogin.css';
 
-export function AdminLogin({ onBack }) {
+export function AdminLogin({ lang, onBack }) {
   const { adminSignIn } = useAuth();
   const [email,    setEmail]    = useState('samrawitabebaw680@gmail.com');
   const [password, setPassword] = useState('');
@@ -20,11 +21,11 @@ export function AdminLogin({ onBack }) {
     } catch (ex) {
       const msg = ex?.message || '';
       if (msg.includes('admin_access_denied')) {
-        setErr('This account does not have admin access.');
+        setErr(lang === 'am' ? 'ይህ አካውንት የአስተዳዳሪ መዳረሻ የለውም።' : 'This account does not have admin access.');
       } else if (msg.toLowerCase().includes('invalid') || msg.toLowerCase().includes('credentials')) {
-        setErr('Wrong email or password.');
+        setErr(lang === 'am' ? 'ኢሜይል ወይም የይለፍ ቃል ስህተት ነው።' : 'Wrong email or password.');
       } else {
-        setErr(msg || 'Sign in failed. Try again.');
+        setErr(msg || (lang === 'am' ? 'መግባት አልተሳካም። እንደገና ይሞክሩ።' : 'Sign in failed. Try again.'));
       }
     } finally {
       setLoading(false);
@@ -40,7 +41,7 @@ export function AdminLogin({ onBack }) {
       </div>
 
       <button className="admin-login-back" onClick={onBack} type="button">
-        ← Back to Home
+        ← {lang === 'am' ? 'ወደ መግቢያ ተመለስ' : 'Back to Home'}
       </button>
 
       <div className="admin-login-card">
@@ -48,13 +49,13 @@ export function AdminLogin({ onBack }) {
 
         <div className="admin-login-header">
           <div className="admin-login-icon">🛡️</div>
-          <h1>Admin Portal</h1>
-          <p>HAGERE VOICE — Platform Management</p>
+          <h1>{lang === 'am' ? 'የአስተዳዳሪ ፖርታል' : 'Admin Portal'}</h1>
+          <p>{lang === 'am' ? 'HAGERE VOICE — የመድረክ አስተዳደር' : 'HAGERE VOICE — Platform Management'}</p>
         </div>
 
         <form className="admin-login-form" onSubmit={handleSubmit} noValidate>
           <div className="admin-field">
-            <label htmlFor="admin-email">Email Address</label>
+            <label htmlFor="admin-email">{t(lang, 'authEmailLabel')}</label>
             <input
               id="admin-email"
               type="email"
@@ -68,7 +69,7 @@ export function AdminLogin({ onBack }) {
           </div>
 
           <div className="admin-field">
-            <label htmlFor="admin-password">Password</label>
+            <label htmlFor="admin-password">{t(lang, 'authPasswordLabel')}</label>
             <div className="admin-pw-wrap">
               <input
                 id="admin-password"
@@ -98,12 +99,14 @@ export function AdminLogin({ onBack }) {
             className="admin-login-btn"
             disabled={loading || !email || !password}
           >
-            {loading ? <span className="admin-spinner" /> : '🔐 Sign In as Admin'}
+            {loading ? <span className="admin-spinner" /> : (lang === 'am' ? '🔐 እንደ አስተዳዳሪ ግባ' : '🔐 Sign In as Admin')}
           </button>
         </form>
 
         <p className="admin-login-note">
-          🔒 Restricted access. Authorized personnel only.
+          {lang === 'am'
+            ? '🔒 የተገደበ መዳረሻ። ለተፈቀደላቸው ሰራተኞች ብቻ።'
+            : '🔒 Restricted access. Authorized personnel only.'}
         </p>
       </div>
     </div>

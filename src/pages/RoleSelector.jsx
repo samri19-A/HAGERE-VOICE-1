@@ -1,6 +1,8 @@
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { t } from '../lib/i18n';
 import './RoleSelector.css';
 
-export function RoleSelector({ onSelectUser, onSelectAdmin, onBack }) {
+export function RoleSelector({ lang, onLangChange, onSelectUser, onSelectAdmin, onBack }) {
   return (
     <div className="role-page">
       {/* Background circles */}
@@ -11,8 +13,12 @@ export function RoleSelector({ onSelectUser, onSelectAdmin, onBack }) {
       </div>
 
       <button className="role-back-btn" onClick={onBack} type="button">
-        ← Back
+        ← {t(lang, 'back')}
       </button>
+
+      <div className="role-lang">
+        <LanguageSwitcher lang={lang} onChange={onLangChange} />
+      </div>
 
       <div className="role-card">
         <div className="role-card-strip" />
@@ -20,7 +26,7 @@ export function RoleSelector({ onSelectUser, onSelectAdmin, onBack }) {
         <div className="role-header">
           <div className="role-logo">🎤</div>
           <h1>HAGERE VOICE</h1>
-          <p>Who are you signing in as?</p>
+          <p>{t(lang, 'roleTitle')}</p>
         </div>
 
         <div className="role-options">
@@ -32,8 +38,8 @@ export function RoleSelector({ onSelectUser, onSelectAdmin, onBack }) {
           >
             <div className="role-option-icon">👤</div>
             <div className="role-option-body">
-              <strong>Business Owner</strong>
-              <span>Manage your shop, inventory and sales</span>
+              <strong>{t(lang, 'roleUserTitle')}</strong>
+              <span>{t(lang, 'roleUserDesc')}</span>
             </div>
             <div className="role-option-arrow">→</div>
           </button>
@@ -46,15 +52,15 @@ export function RoleSelector({ onSelectUser, onSelectAdmin, onBack }) {
           >
             <div className="role-option-icon">🛡️</div>
             <div className="role-option-body">
-              <strong>Platform Admin</strong>
-              <span>Manage users and platform analytics</span>
+              <strong>{t(lang, 'roleAdminTitle')}</strong>
+              <span>{t(lang, 'roleAdminDesc')}</span>
             </div>
             <div className="role-option-arrow">→</div>
           </button>
         </div>
 
         <p className="role-footer-note">
-          🇪🇹 Built for Ethiopian women entrepreneurs
+          🇪🇹 {t(lang, 'roleFooter')}
         </p>
       </div>
     </div>
