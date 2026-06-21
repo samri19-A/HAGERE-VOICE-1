@@ -282,6 +282,13 @@
 .lp-btn-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(0,0,0,0.25); }
 .lp-btn-cta-ghost { padding: 1rem 2.5rem; background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.6); border-radius: 999px; font-family: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
 .lp-btn-cta-ghost:hover { background: rgba(255,255,255,0.1); }
+.lp-btn-feedback {
+  margin-top: 1.25rem; padding: 0.85rem 1.75rem; background: rgba(255,255,255,0.12);
+  color: #fff; border: 2px dashed rgba(255,255,255,0.45); border-radius: 999px;
+  font-family: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lp-btn-feedback:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.7); }
 
 /* ── FOOTER ────────────────────────────────────────────────────────────────── */
 .lp-footer { background: #1f2937; color: #d1d5db; padding: 3rem 0 1.5rem; }

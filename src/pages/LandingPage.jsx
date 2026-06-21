@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { FeedbackModal } from '../components/FeedbackModal';
+import { t } from '../lib/i18n';
 import './LandingPage.css';
 
 // ── Language content ──────────────────────────────────────────────────────────
@@ -458,6 +460,7 @@ export function LandingPage({ lang, onLangChange, onEnterApp, onEnterAdmin }) {
   const [scrolled, setScrolled] = useState(false);
   const [demoIdx, setDemoIdx] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [legalModal, setLegalModal] = useState(null);
   const c = CONTENT[lang];
 
@@ -830,6 +833,9 @@ export function LandingPage({ lang, onLangChange, onEnterApp, onEnterAdmin }) {
               </div>
             </div>
           </div>
+          <button type="button" className="lp-btn-feedback" onClick={() => setFeedbackOpen(true)}>
+            {t(lang, 'feedbackBtn')} — {lang === 'am' ? 'አስተያየትዎን ያጋሩ' : 'Share your experience'}
+          </button>
         </div>
       </section>
 
@@ -873,6 +879,13 @@ export function LandingPage({ lang, onLangChange, onEnterApp, onEnterAdmin }) {
       </footer>
 
       {videoOpen && <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} lang={lang} />}
+      {feedbackOpen && (
+        <FeedbackModal
+          lang={lang}
+          source="landing"
+          onClose={() => setFeedbackOpen(false)}
+        />
+      )}
       {legalModal && <LegalModal type={legalModal} lang={lang} onClose={() => setLegalModal(null)} />}
     </div>
   );

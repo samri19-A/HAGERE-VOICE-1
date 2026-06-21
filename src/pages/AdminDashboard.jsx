@@ -6,6 +6,7 @@ import {
 import {
   adminGetStats, adminGetAllUsers,
   adminDeleteUser, adminGetUserInventory, adminGetUserCommands,
+  adminGetFeedback,
 } from '../lib/adminService';
 import './AdminDashboard.css';
 
@@ -227,6 +228,8 @@ export function AdminDashboard({ user: adminUser, onSignOut }) {
   const [deleting,    setDeleting]    = useState(false);
   const [sortBy,      setSortBy]      = useState('created_at');
   const [sortDir,     setSortDir]     = useState('desc');
+  const [feedback,    setFeedback]    = useState(null);
+  const [feedbackErr, setFeedbackErr] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -243,6 +246,20 @@ export function AdminDashboard({ user: adminUser, onSignOut }) {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+
+  const loadFeedback = useCallback(async () => {
+    setFeedbackErr('');
+    try {
+      const data = await adminGetFeedback();
+      setFeedback(data);
+    } catch (e) {
+      setFeedbackErr(e.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'feedback') loadFeedback();
+  }, [activeTab, loadFeedback]);
 
   // ── Delete handler ─────────────────────────────────────────────────────────
   const handleDelete = async () => {
@@ -333,6 +350,7 @@ export function AdminDashboard({ user: adminUser, onSignOut }) {
           {[
             { id: 'overview', icon: '📊', label: 'Overview' },
             { id: 'users',    icon: '👥', label: 'Users' },
+            { id: 'feedback', icon: '💬', label: 'Feedback' },
             { id: 'charts',   icon: '📈', label: 'Analytics' },
           ].map(item => (
             <button
@@ -369,6 +387,7 @@ export function AdminDashboard({ user: adminUser, onSignOut }) {
             <h1>
               {activeTab === 'overview' && '📊 Overview'}
               {activeTab === 'users'    && '👥 User Management'}
+              {activeTab === 'feedback' && '💬 User Feedback'}
               {activeTab === 'charts'   && '📈 Analytics'}
             </h1>
             <p>Last refreshed: {new Date().toLocaleTimeString()}</p>
@@ -605,6 +624,54 @@ export function AdminDashboard({ user: adminUser, onSignOut }) {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════════════ */}
+        {/* FEEDBACK TAB                                                        */}
+        {/* ═══════════════════════════════════════════════════════════════════ */}
+        {activeTab === 'feedback' && (
+          <div className="adm-feedback">
+            {feedbackErr && <div className="adm-error-banner">⚠️ {feedbackErr}</div>}
+
+            <div className="adm-stat-grid adm-stat-grid-3">
+              <StatCard icon="💬" label="Total Feedback" value={fmt(feedback?.total ?? 0)} color="#6366f1" />
+              <StatCard icon="⭐" label="Average Rating" value={feedback?.avg_rating ?? '—'} color="#f59e0b" />
+              <StatCard icon="🎤" label="Voice Issues" value={fmt((feedback?.by_category || []).find(c => c.category === 'voice')?.count ?? 0)} color="#ec4899" />
+            </div>
+
+            <div className="adm-chart-card">
+              <SectionHead icon="📋" title="Recent Feedback" action={
+                <button className="adm-refresh-btn" onClick={loadFeedback}>↻ Refresh</button>
+              } />
+              <div className="adm-table-wrap">
+                <table className="adm-table adm-table-full">
+                  <thead>
+                    <tr>
+                      <th>Date</th><th>Rating</th><th>Category</th><th>User</th><th>Source</th><th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(feedback?.items || []).length === 0 && (
+                      <tr><td colSpan={6} className="adm-empty">No feedback yet. Share the app and ask users to submit feedback.</td></tr>
+                    )}
+                    {(feedback?.items || []).map((f) => (
+                      <tr key={f.id}>
+                        <td className="adm-muted">{fmtDate(f.created_at)}</td>
+                        <td>{'★'.repeat(f.rating)}{'☆'.repeat(5 - f.rating)}</td>
+                        <td><span className="adm-role-badge">{f.category}</span></td>
+                        <td>
+                          <strong>{f.user_name || f.contact_name || 'Anonymous'}</strong>
+                          <small>{f.user_email || f.contact_email || f.shop_name || ''}</small>
+                        </td>
+                        <td>{f.source}</td>
+                        <td>{f.message || <span className="adm-muted">—</span>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}

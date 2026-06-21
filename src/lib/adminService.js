@@ -49,3 +49,11 @@ export async function adminGetUserCommands(shopId, limit = 50) {
   if (data?.error) throw new Error(data.error);
   return Array.isArray(data) ? data : [];
 }
+
+// ── User feedback ─────────────────────────────────────────────────────────────
+export async function adminGetFeedback(limit = 100) {
+  const { data, error } = await supabase.rpc('admin_get_feedback', { p_limit: limit });
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data;
+}

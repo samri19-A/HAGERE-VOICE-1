@@ -6,6 +6,7 @@ import { ExportToolbar }    from './components/ExportToolbar';
 import { InventoryList }    from './components/InventoryList';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { LowStockAlert }    from './components/LowStockAlert';
+import { FeedbackModal }     from './components/FeedbackModal';
 import { ManualCommandInput } from './components/ManualCommandInput';
 import { Onboarding, shouldShowOnboarding } from './components/Onboarding';
 import { ProductModal }     from './components/ProductModal';
@@ -36,6 +37,7 @@ export default function App({ user, lang, onLangChange, onSignOut }) {
   const [editingItem, setEditingItem] = useState(null);
   // Shop profile modal
   const [profileOpen, setProfileOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   // PWA install
   const [installPrompt, setInstallPrompt] = useState(null);
@@ -176,6 +178,14 @@ export default function App({ user, lang, onLangChange, onSignOut }) {
               </button>
             )}
             <LanguageSwitcher lang={lang} onChange={onLangChange} />
+            <button
+              type="button"
+              className="feedback-btn"
+              onClick={() => setFeedbackOpen(true)}
+              title={t(lang, 'feedbackTitle')}
+            >
+              {t(lang, 'feedbackBtn')}
+            </button>
             <div className="user-menu">
               <button
                 type="button"
@@ -273,6 +283,14 @@ export default function App({ user, lang, onLangChange, onSignOut }) {
           user={user}
           onClose={() => setProfileOpen(false)}
           onSaved={() => showToast(t(lang, 'profileSaved'))}
+        />
+      )}
+      {feedbackOpen && (
+        <FeedbackModal
+          lang={lang}
+          source="app"
+          onClose={() => setFeedbackOpen(false)}
+          onSuccess={() => showToast(t(lang, 'feedbackSentToast'))}
         />
       )}
     </div>

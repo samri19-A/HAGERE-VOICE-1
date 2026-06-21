@@ -371,7 +371,40 @@ main { display: grid; gap: 1.25rem; }
 }
 @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-.modal h2 { margin: 0 0 1.25rem; font-size: 1.15rem; color: var(--primary); }
+.feedback-btn {
+  padding: 0.35rem 0.65rem; border-radius: 999px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--text); font-family: inherit; font-size: 0.78rem;
+  font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.15s;
+}
+.feedback-btn:hover { border-color: var(--primary); color: var(--primary); background: #fdf4f7; }
+
+.feedback-modal { max-width: 520px; }
+.feedback-subtitle { margin: -0.75rem 0 1rem; font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
+.feedback-stars { display: flex; gap: 0.35rem; }
+.feedback-star {
+  border: none; background: none; font-size: 1.85rem; line-height: 1; cursor: pointer;
+  color: #d1d5db; padding: 0; transition: transform 0.1s, color 0.1s;
+}
+.feedback-star.active { color: #f59e0b; }
+.feedback-star:hover { transform: scale(1.08); }
+.feedback-categories { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.feedback-cat {
+  padding: 0.4rem 0.75rem; border-radius: 999px; border: 1.5px solid var(--border);
+  background: var(--bg); font-family: inherit; font-size: 0.78rem; cursor: pointer;
+  transition: all 0.15s;
+}
+.feedback-cat.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.feedback-textarea {
+  width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 10px;
+  font-family: inherit; font-size: 0.95rem; background: var(--bg); resize: vertical; min-height: 96px;
+}
+.feedback-textarea:focus { outline: none; border-color: var(--primary); }
+.feedback-error { color: var(--error); font-size: 0.85rem; margin: 0 0 0.75rem; }
+.feedback-done { text-align: center; padding: 0.5rem 0 0.25rem; }
+.feedback-done-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.feedback-done h2 { margin-bottom: 0.5rem; }
+.feedback-done p { color: var(--muted); margin: 0 0 1.25rem; line-height: 1.5; }
+
 
 .form-row { margin-bottom: 1rem; }
 .form-row label { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.3rem; }
@@ -592,6 +625,7 @@ footer { margin-top: 2rem; text-align: center; font-size: 0.85rem; color: var(--
   .signout-btn { font-size: 0.7rem; padding: 0.2rem 0.45rem; }
   .user-avatar { width: 30px; height: 30px; font-size: 0.8rem; }
   .install-btn { display: none; }
+  .feedback-btn { font-size: 0.7rem; padding: 0.25rem 0.45rem; }
 
   .dash-strip { gap: 0.3rem; }
   .dash-stat  { padding: 0.35rem 0.2rem; border-radius: 8px; }
