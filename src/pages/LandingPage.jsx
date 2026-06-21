@@ -280,7 +280,31 @@ const CONTENT = {
 };
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const DEMO_VIDEO_SRC = '/videos/hagere-demo.mp4';
+const DEMO_YOUTUBE_ID = 'qdqsp_dHBik';
+
+function getYouTubeEmbedSrc(videoId, { autoplay = false } = {}) {
+  const params = new URLSearchParams({
+    rel: '0',
+    modestbranding: '1',
+    playsinline: '1',
+    ...(autoplay ? { autoplay: '1' } : {}),
+  });
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
+}
+
+function DemoVideoEmbed({ className, title, autoplay = false }) {
+  return (
+    <iframe
+      className={className}
+      src={getYouTubeEmbedSrc(DEMO_YOUTUBE_ID, { autoplay })}
+      title={title}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+      loading="lazy"
+    />
+  );
+}
 
 const SOCIAL_LINKS = [
   { id: 'instagram', href: 'https://instagram.com/samrawitabebaw_19',                    label: 'Instagram' },
@@ -324,13 +348,8 @@ function SocialIcon({ id }) {
 
 // ── Video modal ───────────────────────────────────────────────────────────────
 function VideoModal({ open, onClose, lang }) {
-  const videoRef = useRef(null);
-
   useEffect(() => {
-    if (!open) {
-      videoRef.current?.pause();
-      return undefined;
-    }
+    if (!open) return undefined;
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = prev; };
@@ -338,29 +357,19 @@ function VideoModal({ open, onClose, lang }) {
 
   if (!open) return null;
 
+  const title = lang === 'am' ? 'HAGERE VOICE የመድረክ ማሳያ' : 'HAGERE VOICE platform demo';
+
   return (
     <div className="lp-modal-backdrop" onClick={onClose} role="presentation">
       <div className="lp-video-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={lang === 'am' ? 'የዲሞ ቪዲዮ' : 'Demo video'}>
         <button type="button" className="lp-modal-close" onClick={onClose} aria-label="Close">✕</button>
         <div className="lp-video-frame">
-          <video
-            ref={videoRef}
-            className="lp-video-player"
-            controls
-            playsInline
-            preload="metadata"
-            poster="/videos/demo-poster.jpg"
-          >
-            <source src={DEMO_VIDEO_SRC} type="video/mp4" />
-            {lang === 'am'
-              ? 'የእርስዎ browser ቪዲዮን አይደግፍም።'
-              : 'Your browser does not support the video tag.'}
-          </video>
+          <DemoVideoEmbed className="lp-video-player" title={title} autoplay />
         </div>
         <p className="lp-video-caption">
           {lang === 'am'
-            ? '3 ደቂቃ የHAGERE VOICE መድረክ ማሳያ'
-            : '3-minute HAGERE VOICE platform demo'}
+            ? 'HAGERE VOICE መድረክ ማሳያ'
+            : 'HAGERE VOICE platform demo'}
         </p>
       </div>
     </div>
@@ -722,26 +731,16 @@ export function LandingPage({ lang, onLangChange, onEnterApp, onEnterAdmin }) {
           </div>
           <div className="lp-demo-screen">
             <div className="lp-demo-video-wrap">
-              <video
+              <DemoVideoEmbed
                 className="lp-demo-video"
-                controls
-                playsInline
-                preload="metadata"
-                poster="/videos/demo-poster.jpg"
-              >
-                <source src={DEMO_VIDEO_SRC} type="video/mp4" />
-              </video>
+                title={lang === 'am' ? 'HAGERE VOICE የመድረክ ማሳያ' : 'HAGERE VOICE platform demo'}
+              />
             </div>
             <div className="lp-demo-actions">
               <button type="button" className="lp-demo-play-btn" onClick={openDemoVideo}>
                 <span className="lp-demo-play-icon">▶</span>
-                <span>{lang === 'am' ? '3 ደቂቃ ማሳያ በሙሉ ማያ መልከት' : 'Watch 3-min Demo Fullscreen'}</span>
+                <span>{lang === 'am' ? 'ማሳያ በሙሉ ማያ መልከት' : 'Watch Demo Fullscreen'}</span>
               </button>
-              <p className="lp-demo-video-note">
-                {lang === 'am'
-                  ? 'የእርስዎን ቪዲዮ በ public/videos/hagere-demo.mp4 ውስጥ ይጨምሩ'
-                  : 'Add your video file at public/videos/hagere-demo.mp4'}
-              </p>
             </div>
           </div>
         </div>

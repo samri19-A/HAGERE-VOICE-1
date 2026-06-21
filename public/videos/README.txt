@@ -1,9 +1,6 @@
-Place your 3-minute demo video here:
+Demo video is embedded from YouTube on the landing page.
 
-  hagere-demo.mp4
+Video ID: qdqsp_dHBik
+URL: https://youtu.be/qdqsp_dHBik
 
-Optional poster/thumbnail:
-
-  demo-poster.jpg
-
-The landing page loads these from /videos/hagere-demo.mp4 and /videos/demo-poster.jpg
+To change the video, update DEMO_YOUTUBE_ID in src/pages/LandingPage.jsx
